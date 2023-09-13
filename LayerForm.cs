@@ -16,6 +16,7 @@ namespace ExplorerShade
         private bool explorerWindowFocused = false;
         private IntPtr lastFocusedWindow = IntPtr.Zero;
 
+        private Dictionary<IntPtr, WindowInfo> explorerWindowInfos = new Dictionary<IntPtr, WindowInfo>();
 
 
         public LayerForm()
@@ -36,6 +37,13 @@ namespace ExplorerShade
             InitializeExplorerShade();
         }
 
+        public class WindowInfo
+        {
+            public Rectangle Rect { get; set; }
+            public IntPtr Handle { get; set; }
+        }
+
+
         private void CheckFocusedWindowAndActivateLayer()
         {
             IntPtr focusedWindow = GetForegroundWindow();
@@ -46,6 +54,15 @@ namespace ExplorerShade
             {
                 // Capture the ID of the focused window
                 lastFocusedWindow = focusedWindow;
+
+                // Check if the window information exists in the dictionary
+                if (explorerWindowInfos.ContainsKey(focusedWindow))
+                {
+                    // Update the LayerForm's position and size to match the File Explorer window
+                    Rectangle rect = explorerWindowInfos[focusedWindow].Rect;
+                    this.Location = new Point(rect.Left + 15, rect.Top + 15);
+                    this.Size = new Size(rect.Width - 30, rect.Height - 35);
+                }
 
                 // Activate the layer when the focused window is a File Explorer window
                 this.Show();
@@ -145,12 +162,22 @@ namespace ExplorerShade
                 int height = rect.Bottom - rect.Top;
 
                 // Create a System.Drawing.Rectangle to store the window position and size
-                Rectangle windowRect = new Rectangle(rect.Left + 10, rect.Top, width - 20, height - 10);
+                Rectangle windowRect = new Rectangle(rect.Left + 15, rect.Top + 15, width - 30, height - 35);
 
                 // Check if the window has moved or changed size
                 if (!explorerWindowRects.ContainsKey(hWnd) ||
-                    explorerWindowRects[hWnd] != windowRect) // Compare with stored values
+                    explorerWindowRects[hWnd] != windowRect ||
+                    !explorerWindowInfos[hWnd].Handle.Equals(hWnd)) // Compare with stored values
                 {
+                    // Create a new WindowInfo object
+                    WindowInfo windowInfo = new WindowInfo
+                    {
+                        Rect = new Rectangle(rect.Left, rect.Top, width, height),
+                        Handle = hWnd
+                    };
+                    // Update the stored window information
+                    explorerWindowInfos[hWnd] = windowInfo;
+
                     // Update the stored window position and size
                     explorerWindowRects[hWnd] = windowRect;
 
