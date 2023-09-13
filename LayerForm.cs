@@ -23,6 +23,8 @@ namespace ExplorerShade
         {
             InitializeComponent();
 
+            this.DoubleBuffered = true;
+
             // Set the form properties to achieve the desired appearance
             this.FormBorderStyle = FormBorderStyle.None; // No border
             this.ShowInTaskbar = false; // No taskbar button
@@ -129,11 +131,14 @@ namespace ExplorerShade
             int width = this.Width; // Width of LayerForm
             int height = this.Height; // Height of LayerForm
 
+            // Define your desired background color and transparency here
+            Color backgroundColor = Color.FromArgb(38, 0, 0, 0);
+
             Bitmap background = new Bitmap(width, height);
             using (Graphics g = Graphics.FromImage(background))
             {
-                // Fill the background with a red color (adjust as needed)
-                g.Clear(Color.FromArgb(38, 0, 0, 0)); // 38 represents 15% opacity
+                // Fill the background with the predefined color and transparency
+                g.Clear(backgroundColor);
             }
 
             return background;
