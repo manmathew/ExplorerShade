@@ -28,12 +28,48 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LayerForm));
+            notifyIcon1 = new NotifyIcon(components);
+            contextMenu = new ContextMenuStrip(components);
+            exitToolStripMenuItem = new ToolStripMenuItem();
+            contextMenu.SuspendLayout();
+            SuspendLayout();
+            // 
+            // notifyIcon1
+            // 
+            notifyIcon1.Icon = (Icon)resources.GetObject("notifyIcon1.Icon");
+            notifyIcon1.Text = "ExplorerShade";
+            notifyIcon1.Visible = true;
+            // 
+            // contextMenu
+            // 
+            contextMenu.ImageScalingSize = new Size(32, 32);
+            contextMenu.Items.AddRange(new ToolStripItem[] { exitToolStripMenuItem });
+            contextMenu.Name = "contextMenu";
+            contextMenu.Size = new Size(301, 86);
+            // 
+            // exitToolStripMenuItem
+            // 
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new Size(300, 38);
+            exitToolStripMenuItem.Text = "Exit";
+            // 
+            // LayerForm
+            // 
+            AutoScaleDimensions = new SizeF(13F, 32F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(800, 450);
+            Name = "LayerForm";
+            Text = "Form1";
+            contextMenu.ResumeLayout(false);
+            ResumeLayout(false);
         }
 
         #endregion
+
+        private NotifyIcon notifyIcon1;
+        private ContextMenuStrip contextMenu;
+        private ToolStripMenuItem exitToolStripMenuItem;
     }
 }

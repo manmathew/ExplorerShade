@@ -35,9 +35,28 @@ namespace ExplorerShade
             //this.Deactivate += LayerForm_Deactivate; // Add a Deactivate event handler
             //this.LostFocus += LayerForm_LostFocus; // Add a LostFocus event handler
 
+            exitToolStripMenuItem.Click += ExitToolStripMenuItem_Click;
+            notifyIcon1.ContextMenuStrip = contextMenu;
+            notifyIcon1.MouseClick += notifyIcon1_MouseClick;
+
 
             InitializeExplorerShade();
         }
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Close the application gracefully
+            Application.Exit();
+        }
+        private void notifyIcon1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                contextMenu.Show(Cursor.Position);
+            }
+        }
+
+
 
         public class WindowInfo
         {
@@ -99,7 +118,7 @@ namespace ExplorerShade
         {
             // Start a timer to continuously monitor and update File Explorer windows
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Interval = 10; // Adjust the interval as needed, in ms
+            timer.Interval = 1; // Adjust the interval as needed, in ms
             timer.Tick += new EventHandler(UpdateExplorerWindows);
             timer.Start();
             //this.Activated += LayerForm_Activated; // Add an Activated event handler
@@ -225,6 +244,7 @@ namespace ExplorerShade
 
         [DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
+
 
         private struct RECT
         {
